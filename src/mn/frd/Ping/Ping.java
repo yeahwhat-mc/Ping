@@ -2,6 +2,7 @@ package mn.frd.Ping;
 
 import net.minecraft.server.v1_7_R3.EntityPlayer;
 
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.craftbukkit.v1_7_R3.entity.CraftPlayer;
@@ -28,7 +29,8 @@ public class Ping extends JavaPlugin implements Listener {
 	@SuppressWarnings("deprecation")
 	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
 		// Define prefix
-		String prefix = "[Ping]";
+		String prefix = ChatColor.RED + "[Ping]" + ChatColor.RESET;
+
 		
 		//  /ping command
 		if (cmd.getName().equalsIgnoreCase("ping"))
@@ -37,28 +39,38 @@ public class Ping extends JavaPlugin implements Listener {
 			if(args.length == 0) {
 				// Send command overview
 				if (!(sender instanceof Player)){
-					sender.sendMessage(prefix + " " + "Your ping: 0 ms you silly console!");
+					sender.sendMessage(prefix + " " +  "Your ping: " + ChatColor.GRAY + "0 ms" + ChatColor.RESET + " you silly console!");
 					return true;
 				} else {
-					// Define player object
-					final Player p = (Player) sender;
-					sender.sendMessage(prefix + " " + "Your ping: " + getPing(p) + " ms");
-					return true;
+					if(sender.hasPermission("ping.self")){
+						// Define player object
+						final Player p = (Player) sender;
+						sender.sendMessage(prefix + " " + "Your ping: " + ChatColor.GRAY + getPing(p) + " ms" + ChatColor.RESET);
+						return true;						
+					} else {
+						sender.sendMessage(prefix + " " +  "You dont have the permission: " + ChatColor.GRAY + "- ping.self");
+						return true;
+					}
 				}
 			} else if(args.length == 1) {
-				Player argplayer = getServer().getPlayer(args[0]);
-				if(argplayer == null) {
-				    sender.sendMessage(prefix + " " + "The player could not be found");
-				    return true;
+				if(sender.hasPermission("ping.others")){
+					Player argplayer = getServer().getPlayer(args[0]);
+					if(argplayer == null) {
+					    sender.sendMessage(prefix + " " + "The player " + ChatColor.GRAY + args[0] + ChatColor.RESET +" could not be found");
+					    return true;
+					}
+					// Send command overview
+					sender.sendMessage(prefix + " " + getServer().getPlayer(args[0]).getDisplayName().toString() + "'s ping: " + ChatColor.GRAY + getPing(argplayer) + " ms" + ChatColor.RESET);
+					return true;
+				} else {
+					sender.sendMessage(prefix + " " +  "You dont have the permission: " + ChatColor.GRAY + "- ping.others");
+					return true;
 				}
-				// Send command overview
-				sender.sendMessage(prefix + " " + getServer().getPlayer(args[0]).getDisplayName().toString() + "'s ping: "+ getPing(argplayer) + " ms");
-				return true;
 			} else {
 				// Send command overview
-				sender.sendMessage(prefix + " " + "Plugin help:");
-				sender.sendMessage(prefix + " " + "/ping - Check your ping");
-				sender.sendMessage(prefix + " " + "/ping <player> - Check ping of player");
+				sender.sendMessage(prefix + ChatColor.YELLOW +" Plugin help:");
+				sender.sendMessage("/ping" + ChatColor.GRAY + " - " + ChatColor.GOLD + "Check your ping.");
+				sender.sendMessage("/ping <player>" + ChatColor.GRAY + " - " + ChatColor.GOLD + "Check ping of player.");
 				return true;
 			}
 			
