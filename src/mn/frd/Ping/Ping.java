@@ -1,8 +1,10 @@
 package mn.frd.Ping;
 
-import org.bukkit.ChatColor;
+import net.minecraft.server.v1_7_R3.EntityPlayer;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.craftbukkit.v1_7_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -27,21 +29,25 @@ public class Ping extends JavaPlugin implements Listener {
 		// Define prefix
 		String prefix = "[Ping]";
 
+		// Define player object
+		final Player p = (Player) sender;
+		
 		//  /ping command
 		if (cmd.getName().equalsIgnoreCase("ping"))
 		{
 			// Check for arguments
 			if(args.length == 0) {
 				// Send command overview
-				sender.sendMessage(prefix + ChatColor.YELLOW + " Your ping:");
+				sender.sendMessage(prefix + " Your ping: " + getPing(p) + " ms");
 				return true;
 			} else if(args.length == 1) {
+				Player argplayer = getServer().getPlayer(args[0]);
 				// Send command overview
-				sender.sendMessage(prefix + ChatColor.YELLOW + " " + args[0].toString() + "'s ping:");
+				sender.sendMessage(prefix + " " + args[0].toString() + "'s ping: "+ getPing(argplayer) + " ms");
 				return true;
 			} else {
 				// Send command overview
-				sender.sendMessage(prefix + ChatColor.YELLOW + " Plugin help:");
+				sender.sendMessage(prefix + " Plugin help:");
 				return true;
 			}
 			
