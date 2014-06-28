@@ -1,3 +1,8 @@
 name: Ping
 main: mn.frd.Ping.Ping
 version: 1.0
+
+commands: 
+  ping:
+    description: Ping check
+    usage: /<command>
