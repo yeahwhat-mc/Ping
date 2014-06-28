@@ -22,3 +22,7 @@ _none_
 ## Version
 
 1.0
+
+## License
+
+[WTFPL](LICENSE)
