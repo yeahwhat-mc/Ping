@@ -2,4 +2,5 @@
 .settings
 dst
 lib
-/bin/
+bin
+target
