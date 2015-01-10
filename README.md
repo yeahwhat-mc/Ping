@@ -21,7 +21,7 @@ _none_
 
 ## Version
 
-1.0
+1.1
 
 ## License
 
